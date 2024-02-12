@@ -19,6 +19,10 @@ const videoSchema = new Schema({
     type: String,
     required: true,
   },
+  player: {
+    type: String,
+    required: true,
+  },
   publishedAt: {
     type: Date,
     required: true,
@@ -31,10 +35,7 @@ const videoSchema = new Schema({
     type: String,
     required: true,
   },
-  channelThumbnail: {
-    type: String,
-    required: true,
-  },
+  
 });
 
 const Video = mongoose.model("Video", videoSchema);

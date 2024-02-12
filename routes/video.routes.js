@@ -13,11 +13,61 @@ _id ObjectId [primary key]
   publishedAt Date
   channelId String
   channelName String
-  channelThumbnail String
+  player String
 */
 
-router.get("/", isAuthenticated, (req, res, next) => {
-  res.json("Video Route if isAuthenticated");
+router.get("/:videoId", isAuthenticated, async (req, res, next) => {
+  try {
+    // Check the db
+    const video = await Video.findById(req.params.videoId);
+
+    // If the video is not found
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+    // Return the video data
+    res.json(video);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Route to create a new video
+router.post("/", isAuthenticated, async (req, res, next) => {
+  if (
+    !checkBody(req.body, [
+      "title",
+      "videoYtId",
+      "thumbnail",
+      "description",
+      "publishedAt",
+      "channelYtId",
+      "channelName",
+    ])
+  )
+    return res
+      .status(400)
+      .json({ message: "🚧 Provide all mandatory information" });
+  try {
+    // Create & save object
+    const newVideo = new Video({
+      title: req.body.title,
+      videoYtId: req.body.videoYtId,
+      thumbnail: req.body.thumbnail,
+      description: req.body.description,
+      publishedAt: req.body.publishedAt,
+      channelYtId: req.body.channelYtId,
+      channelName: req.body.channelName,
+      player: req.body.player,
+    });
+
+    const savedVideo = await newVideo.save();
+
+    // Respond with the saved video object
+    res.status(201).json(savedVideo);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;

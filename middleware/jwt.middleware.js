@@ -10,6 +10,7 @@ async function isAuthenticated(req, res, next) {
   if (!authHeaders) {
     res.status(401).json({ message: "isAuthenticated ====> ⛔ Provide an authorization token" });
   }
+  console.log(authHeaders);
   const token = authHeaders.replace("Bearer ", "");
 
   const payload = jwt.verify(token, SECRET_TOKEN, { algorithms: ["HS256"] });
