@@ -1,29 +1,27 @@
-const { expressjwt: jwt } = require("express-jwt");
-
-// Instantiate the JWT token validation middleware
-const isAuthenticated = jwt({
-  secret: process.env.TOKEN_SECRET,
-  algorithms: ["HS256"],
-  requestProperty: "payload",
-  getToken: getTokenFromHeaders,
-});
+// const { expressjwt: jwt } = require("express-jwt");
+const User = require("../models/User.model");
+const jwt = require("jsonwebtoken");
+const SECRET_TOKEN = process.env.SECRET_TOKEN;
 
 // Function used to extract the JWT token from the request's 'Authorization' Headers
-function getTokenFromHeaders(req) {
-  // Check if the token is available on the request Headers
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.split(" ")[0] === "Bearer"
-  ) {
-    // Get the encoded token string and return it
-    const token = req.headers.authorization.split(" ")[1];
-    return token;
+async function isAuthenticated(req, res, next) {
+  // Check the body for a token
+  const authHeaders = req.headers.authorization;
+  if (!authHeaders) {
+    res.status(401).json({ message: "isAuthenticated ====> ⛔ Provide an authorization token" });
   }
+  const token = authHeaders.replace("Bearer ", "");
 
-  return null;
+  const payload = jwt.verify(token, SECRET_TOKEN, { algorithms: ["HS256"] });
+  const user = await User.findById(payload.currentUser._id);
+  if (!user) {
+    return res.status(401).json({ message: "isAuthenticated ====> 🛑 User does not exist" });
+  }
+  req.user = user;
+  console.log("isAuthenticated ====>",req.user);
+  next();
 }
 
-// Export the middleware so that we can use it to create protected routes
 module.exports = {
   isAuthenticated,
 };
