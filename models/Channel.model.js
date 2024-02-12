@@ -18,6 +18,10 @@ const channelSchema = new Schema({
 customUrl: {
     type: String,
     required: true
+  },
+thumbnail: {
+    type: String,
+    required: true
   }
 });
 

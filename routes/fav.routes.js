@@ -36,10 +36,10 @@ router.post("/", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// ============ GET /fav || Add video to favs ============ //
+// ============ GET /fav || Retrive all favs ============ //
 router.get("/", isAuthenticated, async (req, res, next) => {
   try {
-    const favVideos = await Fav.find({ userId: req.user._id });
+    const favVideos = await Fav.find({ userId: req.user._id }).populate('videoId');
 
     if (!favVideos) {
       return res
@@ -52,6 +52,8 @@ router.get("/", isAuthenticated, async (req, res, next) => {
     next(error);
   }
 });
+
+
 // ============ DELETE /fav || Remove video from favs ============ //
 router.delete("/:videoYtId", isAuthenticated, async (req, res, next) => {
   try {

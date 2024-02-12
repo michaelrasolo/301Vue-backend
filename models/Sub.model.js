@@ -7,6 +7,10 @@ const subSchema = new Schema({
     ref: 'Channel',
     required: true
   },
+  channelYtId: {
+    type: String,
+    required: true
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
