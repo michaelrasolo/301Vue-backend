@@ -63,7 +63,7 @@ router.delete("/:channelYtId", isAuthenticated, async (req, res, next) => {
       return res.status(400).json({ message: "🚧 Sub not found" });
     }
 
-    res.status(204).json({ message: `🗑️ Suborite deleted successfully` });
+    res.status(204).json({ message: `🗑️ Sub deleted successfully` });
   } catch (error) {
     next(error);
   }
