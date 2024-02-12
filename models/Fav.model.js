@@ -7,6 +7,10 @@ const favSchema = new Schema({
     ref: 'Video',
     required: true
   },
+  videoYtId: {
+    type: String,
+    required: true
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',

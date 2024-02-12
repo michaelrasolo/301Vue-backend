@@ -6,18 +6,6 @@ const Fav = require("../models/Fav.model.js");
 const { checkBody } = require("../modules/checkBody.js");
 const { createVideo } = require("../modules/createVideo.js");
 
-/*
-_id ObjectId [primary key]
-  title String
-  videoYtId String
-  thumbnail String
-  description String
-  publishedAt Date
-  channelId String
-  channelName String
-  player String
-*/
-
 // ============ GET video/:videoId || Retrieve a video data ============ //
 router.get("/:videoId", isAuthenticated, async (req, res, next) => {
   try {
@@ -35,7 +23,7 @@ router.get("/:videoId", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// ============ CREATE video/ || Create a video ============ //
+// ============ POST video/ || Create a video ============ //
 router.post("/", isAuthenticated, async (req, res, next) => {
   if (
     !checkBody(req.body, [
@@ -57,34 +45,6 @@ router.post("/", isAuthenticated, async (req, res, next) => {
 
     // Respond with the saved video object
     res.status(201).json(savedVideo);
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.post("/fav", isAuthenticated, async (req, res, next) => {
-  try {
-    if (!checkBody(req.body, ["videoYtId"]))
-      return res.status(400).json({ message: "🚧 Provide the videoYtId" });
-
-    // Check if the video exists in the database
-    let existingVideo = await Video.findOne({ videoYtId: req.body.videoYtId });
-
-    // If not, create video
-    if (!existingVideo) {
-      existingVideo = await createVideo(req.body);
-    }
-
-    // Fav object created & saved
-    const newFav = new Fav({
-      videoId: existingVideo._id,
-      userId: req.user._id,
-    });
-
-    const savedFav = await newFav.save();
-
-    // Respond with the saved fav object
-    res.status(201).json(savedFav);
   } catch (error) {
     next(error);
   }
