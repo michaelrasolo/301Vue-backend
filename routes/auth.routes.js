@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
 const { isAuthenticated } = require('../middleware/jwt.middleware.js');
-const { checkBody } = require('../middleware/checkBody');
+const { checkBody } = require('../modules/checkBody.js');
 
 //================================== POST /auth/signup  - Creates a new user in the database ==================================//
 router.post('/signup', async (req, res, next) => {
