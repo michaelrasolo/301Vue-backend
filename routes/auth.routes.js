@@ -81,7 +81,7 @@ console.log(currentUser);
     const authToken = jwt.sign( 
       payload,
       process.env.SECRET_TOKEN,
-      { algorithm: 'HS256', expiresIn: "6h" }
+      { algorithm: 'HS256'}
     );
 
     res.status(200).json({ authToken: authToken });
