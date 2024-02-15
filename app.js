@@ -10,11 +10,13 @@ const channelRoutes = require('./routes/channel.routes');
 const authRoutes = require('./routes/auth.routes');
 const favRoutes = require('./routes/fav.routes');
 const subRoutes = require('./routes/sub.routes');
+const indexRoutes = require('./routes/index.routes');
 
 app.use('/auth', authRoutes);
 app.use('/channel', channelRoutes);
 app.use('/video', videoRoutes);
 app.use('/sub', subRoutes);
+app.use('/', indexRoutes);
 app.use('/fav', favRoutes);
 
 require('./error-handling')(app);
