@@ -20,8 +20,7 @@ const videoSchema = new Schema({
     required: true,
   },
   player: {
-    type: String,
-    required: true,
+    type: String
   },
   publishedAt: {
     type: Date,
